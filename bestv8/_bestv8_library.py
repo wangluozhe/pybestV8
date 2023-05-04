@@ -6,12 +6,18 @@ import os
 if platform == 'darwin':
 	file_ext = '_mac_m.dylib' if machine() == "arm64" else '_mac_intel.dylib'
 elif platform in ('win32', 'cygwin'):
-	file_ext = '_win64.dll' if 8 == ctypes.sizeof(ctypes.c_voidp) else '_win32.dll'
+	if 8 == ctypes.sizeof(ctypes.c_voidp):
+		file_ext = '_win64.dll'
+	else:
+		file_ext = '_win32.dll'
+		raise Exception("win32 system not currently supported")
 else:
 	if machine() == "aarch64":
 		file_ext = '_arm64.so'
+		raise Exception("arm64 system not currently supported")
 	elif "x86" in machine():
 		file_ext = '_x86.so'
+		raise Exception("x86 system not currently supported")
 	else:
 		file_ext = '_x64.so'
 
