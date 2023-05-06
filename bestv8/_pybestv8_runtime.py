@@ -54,7 +54,7 @@ class PyBestV8Runtime(AbstractRuntime):
             return self.convert(value)
 
         def _eval(self, source, recv_size=20000):
-            res = self.exec_("return JSON.stringify({source})".format(source=encode_unicode_codepoints(source.strip())), recv_size=recv_size)
+            res = self.exec_("return JSON.stringify(eval('{source}'))".format(source=encode_unicode_codepoints(source.strip())), recv_size=recv_size)
             self._source += "\n" + source + ";\n"
             return res
 
