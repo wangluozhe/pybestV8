@@ -54,7 +54,8 @@ class PyBestV8Runtime(AbstractRuntime):
             return self.convert(value)
 
         def _eval(self, source, recv_size=20000):
-            res = self.exec_("return JSON.stringify(eval('{source}'))".format(source=encode_unicode_codepoints(source.strip())), recv_size=recv_size)
+            _source = source.strip().replace("\n", "")
+            res = self.exec_("return JSON.stringify(eval('{source}'))".format(source=encode_unicode_codepoints(_source)), recv_size=recv_size)
             self._source += "\n" + source + ";\n"
             return res
 
@@ -63,6 +64,9 @@ class PyBestV8Runtime(AbstractRuntime):
             _eval_js = "{identifier}.apply(this, {args})".format(identifier=identifier, args=args)
             res = self.eval(_eval_js, recv_size=recv_size)
             return res
+
+        def bestv8_import(self, file_path):
+            self._source += f';\nbestv8import("{file_path}")'
 
         @classmethod
         def convert(cls, obj):

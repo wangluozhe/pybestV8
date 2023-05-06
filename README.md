@@ -1,23 +1,21 @@
 # PyBestV8
-PyBestV8 is a Python library based on the [BestV8](https://github.com/BestToYou/bestV8_release) project, which is a fast and easy-to-use JS execution library.
+PyBestV8是一个基于[BestV8](https://github.com/BestToYou/bestV8_release)的python项目，这是一个快速且易于使用的JS执行库并且支持上下文操作。
 
-### Installation
+### 安装
 ```bash
 $ pip install PyBestV8
 ```
 
-or
+或
 
 ```bash
 $ easy_install PyBestV8
 ```
 
-### Run
-Run JavaScript code from Python.
+### 运行
+从Python运行JavaScript代码。
 
-PyBestV8 is a porting of BestV8 from Ruby. PyBestV8 automatically picks the best runtime available to evaluate your JavaScript program.
-
-A short example:
+一个简短的例子:
 
 ```python
 import bestv8
@@ -28,9 +26,10 @@ print("result:", result, type(result))
 
 ```
 
-or
+或
 
 ```python
+# 支持上下文操作
 import bestv8
 
 js_string = """
@@ -55,6 +54,25 @@ result = ctx.call("abc")
 print("abc->result:", result, type(result))
 result = ctx.call("bcd")
 print("bcd->result:", result, type(result))
+
+```
+
+### import
+PyBestV8支持使用`bestv8_import`导入其他一些文件，使代码更加清晰易懂和使用。
+
+```python
+import bestv8
+
+js_string = """
+function get_location(){
+    return location;
+}
+"""
+
+ctx = bestv8.compile(js_string)
+ctx.bestv8_import("import_test.js")
+result = ctx.call("get_location")
+print("import->result:", result, type(result))
 
 ```
 
